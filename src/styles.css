@@ -1,0 +1,20 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: dark;
+  --paper: #e9d9b5;
+  --white: #f0edf0;
+  --quiet: #bcb8c1;
+  --violet: #b695e8;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: #121116;
+  color: var(--white);
+  font-family: Arial, Helvetica, sans-serif;
+}

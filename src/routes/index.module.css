@@ -1,0 +1,344 @@
+.pageShell {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: clamp(10px, 2.5vw, 30px);
+}
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  width: min(100%, 1440px);
+  aspect-ratio: 16 / 9;
+  min-height: min(500px, calc(100svh - 40px));
+  overflow: hidden;
+  border: 1px solid rgba(237, 229, 245, 0.28);
+  border-radius: 8px;
+  /* A tinted translucent ground lets the sequence read through the existing panel. */
+  background: radial-gradient(ellipse at 56% 57%, rgba(99, 69, 131, 0.18), transparent 39%), rgba(37, 37, 43, 0.72);
+  box-shadow: inset 0 0 0 7px rgba(255, 255, 255, 0.018), 0 30px 100px rgba(0, 0, 0, 0.3);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(90deg, transparent 49.9%, rgba(233, 215, 255, 0.035) 50%, transparent 50.1%), linear-gradient(rgba(233, 215, 255, 0.027) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 54px;
+  mask-image: linear-gradient(transparent, #000 18%, #000 80%, transparent);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 50%;
+  height: 70%;
+  left: 30%;
+  top: 13%;
+  background: radial-gradient(ellipse, rgba(152, 109, 207, 0.14), transparent 66%);
+  filter: blur(35px);
+}
+
+.serviceStrip {
+  position: absolute;
+  top: 6.2%;
+  left: 3.3%;
+  right: 3.3%;
+  height: 6.4%;
+  min-height: 28px;
+  max-height: 45px;
+  padding: 0 clamp(12px, 2vw, 28px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid rgba(239, 224, 197, 0.24);
+  border-radius: 99px;
+  background: rgba(64, 60, 56, 0.52);
+  color: #dfd6c8;
+  font: 9px/1 monospace;
+  letter-spacing: 0.025em;
+  white-space: nowrap;
+}
+
+.serviceStrip span {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(7px, 1.4vw, 19px);
+}
+
+.serviceStrip b {
+  font-size: 8px;
+  font-weight: 400;
+  color: #bea7d9;
+}
+
+.identity {
+  position: absolute;
+  top: 21%;
+  left: 3.3%;
+  z-index: 2;
+}
+
+.identity strong {
+  display: block;
+  color: #eee9df;
+  font-size: clamp(16px, 2.1vw, 28px);
+  line-height: 1.1;
+  letter-spacing: -0.055em;
+  font-weight: 600;
+}
+
+.identity span {
+  display: block;
+  margin-top: 3px;
+  color: #c5bec9;
+  font-size: clamp(10px, 1.05vw, 14px);
+}
+
+.tagline {
+  position: absolute;
+  top: 21%;
+  right: 3.3%;
+  z-index: 2;
+  text-align: right;
+  color: #e0dbe3;
+  font-size: clamp(10px, 1.1vw, 15px);
+  line-height: 1.48;
+}
+
+.tagline span {
+  display: block;
+  color: #aaa3b0;
+}
+
+.brand {
+  position: absolute;
+  z-index: 0;
+  top: 42%;
+  left: 50%;
+  width: 100%;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  color: var(--paper);
+  font-size: clamp(72px, 14.7vw, 205px);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.095em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.artifactNote {
+  position: absolute;
+  z-index: 2;
+  bottom: 22%;
+  right: 3.3%;
+  text-align: right;
+}
+
+.artifactNote strong {
+  display: block;
+  font-size: clamp(18px, 3.2vw, 34px);
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+}
+
+.artifactNote span {
+  display: block;
+  margin-top: 6px;
+  color: #c6b6d9;
+  font: 9px monospace;
+  letter-spacing: 0.11em;
+}
+
+.socials {
+  position: absolute;
+  z-index: 2;
+  bottom: 22%;
+  left: 3.3%;
+  display: flex;
+  gap: clamp(16px, 3vw, 42px);
+  color: #e0dce4;
+  font-size: 11px;
+}
+
+.social {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.social a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.social a:hover {
+  color: #fff;
+}
+
+.socialMark {
+  display: grid;
+  place-items: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  color: #17151b;
+  background: #a988de;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.social:nth-child(2) .socialMark {
+  background: #dcaa8e;
+}
+
+.description {
+  position: absolute;
+  z-index: 2;
+  left: 3.3%;
+  right: 3.3%;
+  bottom: 5.7%;
+  margin: 0;
+  padding-top: 13px;
+  border-top: 1px solid rgba(235, 224, 243, 0.22);
+  color: #e1dde4;
+  font-size: clamp(10px, 1.05vw, 13px);
+  line-height: 1.65;
+}
+
+.reviewLabel {
+  position: absolute;
+  z-index: 3;
+  top: 14%;
+  right: 3.5%;
+  color: rgba(217, 204, 234, 0.56);
+  font: 8px monospace;
+  letter-spacing: 0.11em;
+}
+
+@media (min-width: 1100px) {
+  .brand {
+    font-size: clamp(180px, 14.4vw, 208px);
+  }
+}
+
+@media (max-width: 700px) {
+  .pageShell {
+    padding: 9px;
+  }
+
+  .hero {
+    aspect-ratio: auto;
+    min-height: calc(100svh - 18px);
+  }
+
+  .serviceStrip {
+    top: 4%;
+    left: 4%;
+    right: 4%;
+    height: auto;
+    max-height: none;
+    min-height: 36px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 14px;
+    padding: 9px 10px;
+    font-size: 7px;
+  }
+
+  .serviceStrip span {
+    gap: 8px;
+  }
+
+  .identity {
+    top: 17%;
+    left: 5%;
+  }
+
+  .identity strong {
+    font-size: 18px;
+  }
+
+  .identity span {
+    font-size: 10px;
+  }
+
+  .tagline {
+    top: 17%;
+    right: 5%;
+    font-size: 10px;
+  }
+
+  .reviewLabel {
+    top: 27%;
+    right: 5%;
+    font-size: 7px;
+  }
+
+  .brand {
+    top: 45%;
+    font-size: clamp(49px, 13.6vw, 92px);
+    letter-spacing: -0.09em;
+  }
+
+  .socials {
+    bottom: 19%;
+    left: 5%;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 10px;
+  }
+
+  .artifactNote {
+    right: 5%;
+    bottom: 19%;
+  }
+
+  .artifactNote strong {
+    max-width: 145px;
+    font-size: 20px;
+  }
+
+  .artifactNote span {
+    font-size: 7px;
+  }
+
+  .description {
+    left: 5%;
+    right: 5%;
+    bottom: 4%;
+    padding-top: 10px;
+    font-size: 10px;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 380px) {
+  .serviceStrip {
+    font-size: 6px;
+    gap: 5px 9px;
+  }
+
+  .brand {
+    font-size: 48px;
+  }
+
+  .socials {
+    font-size: 9px;
+  }
+
+  .artifactNote strong {
+    max-width: 120px;
+    font-size: 17px;
+  }
+
+  .description {
+    font-size: 9px;
+  }
+}
