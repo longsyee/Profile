@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080c14">
+  <title>Edwin — Aurora Portfolio Direction</title>
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: #080c14; }
+    body { margin: 0; color: #f4f0e7; background: #080c14; font-family: Arial, Helvetica, sans-serif; }
+    header { position: sticky; z-index: 2; top: 0; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 17px clamp(18px, 4vw, 60px); border-bottom: 1px solid rgba(238,240,232,.13); background: rgba(8,12,20,.92); backdrop-filter: blur(18px); }
+    header strong { font-size: 12px; letter-spacing: .16em; }
+    header span { display: block; margin-top: 4px; color: #9ea7a4; font-size: 8px; letter-spacing: .12em; }
+    nav { display: flex; gap: clamp(13px, 2.5vw, 34px); }
+    nav a { color: #bdc7c2; font: 9px/1.4 monospace; letter-spacing: .08em; text-decoration: none; text-transform: uppercase; }
+    nav a:hover { color: #a8f0c0; }
+    main { width: min(100%, 1500px); margin: 0 auto; padding: 0 clamp(12px, 2vw, 30px); }
+    article { padding: clamp(38px, 7vw, 94px) 0; border-bottom: 1px solid rgba(238,240,232,.14); scroll-margin-top: 68px; }
+    .label { display: flex; align-items: center; gap: 14px; margin: 0 0 18px; color: #9fe8b6; font: 9px/1.4 monospace; letter-spacing: .17em; text-transform: uppercase; }
+    .label::after { content: ""; width: min(120px, 18vw); height: 1px; background: rgba(159,232,182,.4); }
+    h1 { margin: 0 0 26px; font-size: clamp(24px, 4vw, 42px); font-weight: 500; letter-spacing: -.06em; }
+    figure { margin: 0; overflow: hidden; border: 1px solid rgba(221,235,227,.16); background: #10151b; box-shadow: 0 35px 100px rgba(0,0,0,.3); }
+    img { display: block; width: 100%; height: auto; }
+    footer { padding: 28px clamp(18px, 4vw, 60px); color: #89928f; font: 9px monospace; letter-spacing: .08em; }
+    @media(max-width: 560px) { header { align-items: flex-start; flex-direction: column; } nav { width: 100%; justify-content: space-between; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div><strong>EDWIN / VISUAL DIRECTION</strong><span>AURORA WORKSHOP — DESIGN STUDY</span></div>
+    <nav aria-label="Jump to a section">
+      <a href="#hero">01 Hero</a><a href="#work">02 Work</a><a href="#about">03 About</a><a href="#contact">04 Contact</a>
+    </nav>
+  </header>
+  <main>
+    <article id="hero">
+      <p class="label">Section 01 / Arrival</p>
+      <h1>A world to step into.</h1>
+      <figure><img src="aurora-hero.png" alt="Aurora-lit floating studio portfolio hero with the headline Make the web feel alive"></figure>
+    </article>
+    <article id="work">
+      <p class="label">Section 02 / Selected work</p>
+      <h1>Three ideas, each with its own orbit.</h1>
+      <figure><img src="aurora-work.png" alt="Three-dimensional portfolio concepts floating against a green aurora"></figure>
+    </article>
+    <article id="about">
+      <p class="label">Section 03 / The maker</p>
+      <h1>Design eye. Developer hands.</h1>
+      <figure><img src="aurora-about.png" alt="Luminous sculptural E monogram and about section in a jade aurora landscape"></figure>
+    </article>
+    <article id="contact">
+      <p class="label">Section 04 / Contact</p>
+      <h1>A quiet, luminous finish.</h1>
+      <figure><img src="aurora-contact.png" alt="Minimal contact call to action over a mint green aurora reflected in a lake"></figure>
+    </article>
+  </main>
+  <footer>DESIGN STUDY ONLY / GENERATED REFERENCES / NOT YET APPLIED TO THE LIVE TANSTACK PAGE</footer>
+</body>
+</html>
