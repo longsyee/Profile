@@ -1,19 +1,35 @@
-# ZYT AI Web
+# Edwin | Developer + Designer
 
-TanStack Start boilerplate with a scroll-scrubbed image sequence behind the existing ZYT hero.
+A personal portfolio built with TanStack Start. The opening scene scrubs through a 150-frame, GPU-upscaled image sequence at 3840 px wide; project cards and the 3D canvas follow below it.
 
 ## Development
 
 ```sh
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
-The project uses the extracted sequence in `assets/video-frames/`. Vite serves that directory as static assets at the site root, so the animation requests `/frame-001.png` through `/frame-150.png` progressively without duplicating the source frames.
+The scrolling player serves 150 evenly sampled 1920 × 1080 WebP frames from `assets/video-frames-redone/`, extracted from the supplied MP4 for responsive playback.
 
-## Build
+## Private project editor
+
+The public page works without a database and shows clearly labeled concept cards. To manage real projects and upload cover images:
+
+1. Copy `.env.example` to `.env` and set `DATABASE_URL` to a PostgreSQL database.
+2. Set `ADMIN_EMAIL` and a unique `ADMIN_PASSWORD` with at least 12 characters.
+3. Create or update the private admin account:
+
+   ```sh
+   bun run admin:create
+   ```
+
+4. Start the app and open `/login` directly. There is no public sign-up or login link.
+
+The API creates its tables on first use. Uploaded project images are written to `assets/uploads/`; deployments need persistent storage mounted there.
+
+## Production
 
 ```sh
-npm run build
-npm run start
+bun run build
+bun run start
 ```

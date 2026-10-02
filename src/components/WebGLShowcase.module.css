@@ -1,0 +1,32 @@
+.stage {
+  position: relative;
+  min-height: 480px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, rgba(220, 168, 111, 0.1), transparent 58%);
+}
+
+.slot,
+.placeholder {
+  min-height: 480px;
+}
+
+.placeholder {
+  background: radial-gradient(ellipse at center, rgba(220, 168, 111, 0.1), transparent 58%);
+}
+
+.stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 760px) {
+  .stage {
+    min-height: 340px;
+  }
+
+  .slot,
+  .placeholder {
+    min-height: 340px;
+  }
+}

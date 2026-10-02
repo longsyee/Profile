@@ -1,53 +1,31 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { ScrollSequence } from '../components/ScrollSequence'
-import styles from './index.module.css'
+import { useEffect, useState } from 'react'
+import { AuroraPortfolio } from '../components/AuroraPortfolio'
+import { conceptProjects, type Project } from '../lib/projects'
 
 export const Route = createFileRoute('/')({
+  head: () => ({
+    meta: [
+      { title: 'Edwin | Developer + Designer' },
+      { name: 'description', content: 'Edwin builds expressive websites and digital experiences, from first sketch to final interaction.' },
+    ],
+  }),
   component: HomePage,
 })
 
 function HomePage() {
-  return (
-    <ScrollSequence>
-      <div className={styles.pageShell}>
-        <main className={styles.hero} aria-labelledby="zyt-title">
-          <nav className={styles.serviceStrip} aria-label="Product capabilities">
-            <span>AI-POWERED WEBSITES <b>&middot;</b></span>
-            <span>PRODUCT EXPERIENCES <b>&middot;</b></span>
-            <span>INTELLIGENT AUTOMATION <b>&middot;</b></span>
-            <span>FROM IDEA TO LAUNCH</span>
-          </nav>
+  const [projects, setProjects] = useState<Project[]>(conceptProjects)
 
-          <div className={styles.identity}>
-            <strong>ZYT</strong>
-            <span>AI web development</span>
-          </div>
-          <div className={styles.tagline}>
-            Digital experiences.<span>Built to think ahead.</span>
-          </div>
-          <div className={styles.reviewLabel}>A NEW KIND OF CANVAS&nbsp; &middot; &nbsp;01 / 01</div>
+  useEffect(() => {
+    let active = true
+    fetch('/api/projects')
+      .then((response) => response.ok ? response.json() as Promise<{ configured: boolean; projects: Project[] }> : null)
+      .then((result) => {
+        if (active && result) setProjects(result.configured ? result.projects : conceptProjects)
+      })
+      .catch(() => undefined)
+    return () => { active = false }
+  }, [])
 
-          <h1 className={styles.brand} id="zyt-title">ZYT</h1>
-
-          <div className={styles.socials} aria-label="ZYT links">
-            <span className={styles.social}>
-              <span className={styles.socialMark}>&#10022;</span> ZYT Studio
-            </span>
-            <span className={styles.social}>
-              <span className={styles.socialMark}>&#9678;</span>{' '}
-              <a href="https://zhiyuantech.ai">zhiyuantech.ai</a>
-            </span>
-          </div>
-
-          <div className={styles.artifactNote}>
-            <strong>AI WEB<br />DEVELOPMENT</strong>
-            <span>STRATEGY &middot; DESIGN &middot; ENGINEERING</span>
-          </div>
-          <p className={styles.description}>
-            We build intelligent websites and digital products that pair thoughtful design with AI&mdash;turning complex ideas into useful, distinctive experiences.
-          </p>
-        </main>
-      </div>
-    </ScrollSequence>
-  )
+  return <AuroraPortfolio projects={projects} />
 }

@@ -1,0 +1,374 @@
+.page {
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding: 28px;
+  background: #15161a;
+  color: #f1f0eb;
+}
+
+.loading {
+  color: rgba(241, 240, 235, 0.72);
+}
+
+.back {
+  position: absolute;
+  top: 28px;
+  left: 30px;
+  color: rgba(241, 240, 235, 0.68);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.back:hover {
+  color: #e6b67e;
+}
+
+.loginCard {
+  width: min(100%, 460px);
+  padding: clamp(26px, 5vw, 48px);
+  background: #202126;
+}
+
+.eyebrow {
+  margin: 0 0 18px;
+  color: #cb9a67;
+  font: 10px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.15em;
+}
+
+.loginCard h1,
+.editor h1 {
+  margin: 0;
+  font-size: clamp(36px, 6vw, 54px);
+  line-height: 0.98;
+  letter-spacing: -0.07em;
+}
+
+.intro {
+  margin: 18px 0 30px;
+  color: rgba(241, 240, 235, 0.72);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.loginForm,
+.editor form {
+  display: grid;
+  gap: 18px;
+}
+
+.loginForm label,
+.editor form > label {
+  display: grid;
+  gap: 8px;
+  color: inherit;
+  font-size: 12px;
+}
+
+.loginForm input,
+.editor input:not([type="checkbox"]),
+.editor textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 11px 12px;
+  border: 1px solid rgba(241, 240, 235, 0.24);
+  border-radius: 2px;
+  outline: none;
+  background: #17181c;
+  color: #f1f0eb;
+  font: inherit;
+}
+
+.loginForm input:focus,
+.editor input:focus,
+.editor textarea:focus {
+  border-color: #cb9a67;
+  box-shadow: 0 0 0 2px rgba(203, 154, 103, 0.22);
+}
+
+.loginForm button,
+.formActions > button {
+  min-height: 46px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 2px;
+  background: #e1ad74;
+  color: #1b1c20;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.loginForm button:disabled,
+.formActions button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.setupNotice {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border-left: 2px solid #e1ad74;
+  background: rgba(225, 173, 116, 0.08);
+  color: rgba(241, 240, 235, 0.78);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.setupNotice strong {
+  color: #f1f0eb;
+}
+
+.setupNotice code {
+  color: #f1c18b;
+}
+
+.footnote {
+  margin: 24px 0 0;
+  color: rgba(241, 240, 235, 0.45);
+  font-size: 11px;
+}
+
+.message {
+  margin: 18px 0 0;
+  color: #dfb47f;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.adminPage {
+  min-height: 100svh;
+  background: #eeeae2;
+  color: #1b1c20;
+}
+
+.adminHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px clamp(20px, 5vw, 72px);
+  border-bottom: 1px solid rgba(27, 28, 32, 0.15);
+}
+
+.adminHeader .back {
+  position: static;
+  color: #5f5b55;
+}
+
+.adminHeader > div {
+  display: grid;
+  gap: 4px;
+  text-align: center;
+}
+
+.adminHeader > div span {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.07em;
+}
+
+.adminHeader > div strong {
+  color: #756d63;
+  font: 8px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.13em;
+}
+
+.signOut {
+  border: 0;
+  background: transparent;
+  color: #5f5b55;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.adminLayout {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.85fr) minmax(400px, 1.15fr);
+  gap: clamp(32px, 8vw, 120px);
+  width: min(1440px, 100%);
+  margin: 0 auto;
+  padding: clamp(40px, 7vw, 88px) clamp(20px, 5vw, 72px);
+}
+
+.editor h1 {
+  max-width: 430px;
+  margin-bottom: 32px;
+  font-size: clamp(34px, 4vw, 52px);
+}
+
+.editor form > label {
+  color: #292a2e;
+  font-weight: 550;
+}
+
+.editor input:not([type="checkbox"]),
+.editor textarea {
+  border-color: rgba(27, 28, 32, 0.2);
+  background: #f8f6f1;
+  color: #1b1c20;
+  resize: vertical;
+}
+
+.editor input[type="file"] {
+  padding: 9px;
+  font-size: 11px;
+}
+
+.editor input[type="file"]::file-selector-button {
+  margin-right: 12px;
+  padding: 7px 10px;
+  border: 0;
+  background: #dfd8cb;
+  color: #1b1c20;
+  cursor: pointer;
+}
+
+.preview {
+  display: block;
+  width: 100%;
+  max-height: 240px;
+  object-fit: cover;
+}
+
+.checkbox {
+  display: flex !important;
+  align-items: center;
+  gap: 10px !important;
+}
+
+.checkbox input {
+  width: 16px;
+  height: 16px;
+  accent-color: #8f6138;
+}
+
+.formActions {
+  display: flex;
+  gap: 10px;
+}
+
+.formActions > .cancel {
+  border: 1px solid rgba(27, 28, 32, 0.25);
+  background: transparent;
+  color: #1b1c20;
+}
+
+.projectList {
+  padding-top: 4px;
+}
+
+.listHeading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.listHeading .eyebrow {
+  margin-bottom: 0;
+}
+
+.listHeading h2 {
+  margin: 0;
+  font-size: 24px;
+  letter-spacing: -0.05em;
+}
+
+.listHeading h2 span {
+  margin-left: 7px;
+  color: #97714d;
+  font: 11px ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.projectRow {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-top: 1px solid rgba(27, 28, 32, 0.15);
+}
+
+.projectRow > img,
+.rowArtwork {
+  width: 72px;
+  height: 52px;
+  object-fit: cover;
+  background: linear-gradient(140deg, #c98e5b, #4b4540 50%, #1e2023);
+}
+
+.rowInfo {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.rowInfo strong {
+  overflow: hidden;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowInfo span {
+  color: #77716a;
+  font-size: 10px;
+}
+
+.projectRow button {
+  border: 0;
+  background: transparent;
+  color: #5d5448;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.projectRow .delete {
+  color: #9b4d39;
+  font-size: 20px;
+}
+
+.noProjects {
+  padding: 24px 0;
+  border-top: 1px solid rgba(27, 28, 32, 0.15);
+  color: #77716a;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+@media (max-width: 900px) {
+  .adminLayout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 20px;
+  }
+
+  .back {
+    top: 18px;
+    left: 20px;
+  }
+
+  .adminHeader {
+    padding: 16px 18px;
+  }
+
+  .projectRow {
+    grid-template-columns: 56px minmax(0, 1fr) auto auto;
+    gap: 9px;
+  }
+
+  .projectRow > img,
+  .rowArtwork {
+    width: 56px;
+    height: 44px;
+  }
+}

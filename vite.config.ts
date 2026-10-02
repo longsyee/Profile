@@ -5,8 +5,9 @@ import { nitro } from 'nitro/vite'
 import { defineConfig } from 'vite'
 
 const frameSequenceDir = fileURLToPath(
-  new URL('./assets/video-frames', import.meta.url),
+  new URL('./frame', import.meta.url),
 )
+const uploadDir = fileURLToPath(new URL('./assets/uploads', import.meta.url))
 
 export default defineConfig({
   plugins: [
@@ -15,9 +16,10 @@ export default defineConfig({
     nitro({
       publicAssets: [
         { dir: frameSequenceDir, baseURL: '/', maxAge: 31_536_000 },
+        { dir: uploadDir, baseURL: '/uploads', maxAge: 31_536_000 },
       ],
     }),
   ],
-  // Serve the existing numbered sequence at /frame-001.png without copying it.
+  // Serve the supplied scroll sequence at stable root URLs.
   publicDir: frameSequenceDir,
 })

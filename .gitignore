@@ -8,3 +8,4 @@ coverage/
 .env
 .env.*
 !.env.example
+assets/video-frames-4k/
