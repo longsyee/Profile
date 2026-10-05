@@ -1,9 +1,9 @@
-.mascot { position: absolute; top: 5%; right: 1%; width: min(59vw, 760px); aspect-ratio: 1; pointer-events: none; }
+.mascot { position: absolute; top: 5%; right: 2%; width: min(46vw, 590px); aspect-ratio: 1; pointer-events: none; }
 .body { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; }
 .headMask { position: absolute; z-index: 1; top: 0; left: 24%; width: 65%; height: 56%; border-radius: 38% 35% 14% 15%; background-color: #171522; background-image: radial-gradient(#5267f51b 1px, transparent 1px); background-size: 11px 11px; }
 .head { --head-x: 0px; --head-y: 0px; --head-tilt: 0deg; position: absolute; z-index: 2; top: 2%; left: 26%; width: 59%; height: 59%; object-fit: contain; transform: translate(var(--head-x), var(--head-y)) rotate(var(--head-tilt)); transform-origin: 52% 88%; transition: transform 260ms cubic-bezier(.2,.75,.2,1); }
 @media (max-width: 760px) {
-  .mascot { position: relative; top: auto; right: auto; bottom: auto; order: 2; align-self: center; width: min(68vw, 320px); margin: 22px auto 82px; transform: none; }
+  .mascot { display: none; }
   .headMask { background-size: 6px 6px; }
   .head { transition: none; }
 }

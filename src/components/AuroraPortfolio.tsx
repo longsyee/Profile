@@ -55,7 +55,6 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
             <p className={styles.lede}>I’m Edwin. I turn ambitious ideas into expressive websites, thoughtful products, and details people remember.</p>
             <div className={styles.actions}>
               <a className={styles.primaryButton} href="#work">Explore selected work <span aria-hidden="true">↓</span></a>
-              <a className={styles.textLink} href="#work">Skip to projects <span aria-hidden="true">↘</span></a>
             </div>
           </div>
           <div className={styles.sceneLabel}><span>01 / THE ATELIER</span><i /> MALAYSIA · EVERYWHERE</div>
