@@ -13,10 +13,13 @@ export function AuroraWorld() {
     const host = hostRef.current
     if (!host) return
 
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    let reducedMotion = motionQuery.matches
     const mobile = window.innerWidth < 760
     const canvas = document.createElement('canvas')
     let renderer: THREE.WebGLRenderer
+    let frame = 0
+    let contextLost = false
     try {
       renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: window.innerWidth > 760, powerPreference: 'high-performance' })
     } catch {
@@ -28,7 +31,13 @@ export function AuroraWorld() {
     host.appendChild(canvas)
 
     const scene = new THREE.Scene()
-    const background = new THREE.TextureLoader().load(auroraBackdropUrl)
+    const loader = new THREE.TextureLoader()
+    const background = loader.load(
+      auroraBackdropUrl,
+      (texture) => { scene.background = texture },
+      undefined,
+      () => { scene.background = null },
+    )
     background.colorSpace = THREE.SRGBColorSpace
     scene.background = background
 
@@ -37,7 +46,10 @@ export function AuroraWorld() {
     const target = new THREE.Vector3(0, 0.45, 0)
     camera.lookAt(target)
 
-    const buildingTexture = new THREE.TextureLoader().load(floatingBuildingUrl)
+    const buildingTexture = loader.load(floatingBuildingUrl, undefined, undefined, () => {
+      canvas.dataset.failed = 'true'
+      window.cancelAnimationFrame(frame)
+    })
     buildingTexture.colorSpace = THREE.SRGBColorSpace
     buildingTexture.anisotropy = 8
     const buildingMaterial = new THREE.MeshBasicMaterial({
@@ -141,13 +153,13 @@ export function AuroraWorld() {
     )
 
     resize()
-    let frame = 0
     const tick = (now: number) => {
+      if (contextLost || canvas.dataset.failed === 'true') return
       const time = now * 0.001
       const motionScale = reducedMotion ? 0 : 1
       buildingGroup.position.y = buildingBase.y + Math.sin(time * 0.68) * 0.17 * motionScale
       buildingGroup.rotation.x += ((-0.025 - pointer.y * 0.045 * motionScale) - buildingGroup.rotation.x) * 0.035
-      buildingGroup.rotation.y += ((-0.035 + pointer.x * 0.075 * motionScale + Math.sin(time * 0.22) * 0.024) - buildingGroup.rotation.y) * 0.035
+      buildingGroup.rotation.y += ((-0.035 + pointer.x * 0.075 * motionScale + Math.sin(time * 0.22) * 0.024 * motionScale) - buildingGroup.rotation.y) * 0.035
       buildingGroup.rotation.z += ((0.012 + pointer.x * 0.012 * motionScale) - buildingGroup.rotation.z) * 0.035
       stars.rotation.y = Math.sin(time * 0.05) * 0.015 * motionScale
       fragments.forEach(({ mesh, home, phase, speed, lift }, index) => {
@@ -160,13 +172,45 @@ export function AuroraWorld() {
       if (!reducedMotion) frame = window.requestAnimationFrame(tick)
     }
 
+    const onContextLost = (event: Event) => {
+      event.preventDefault()
+      contextLost = true
+      canvas.dataset.lost = 'true'
+      window.cancelAnimationFrame(frame)
+    }
+    const onContextRestored = () => {
+      contextLost = false
+      delete canvas.dataset.lost
+      resize()
+      frame = window.requestAnimationFrame(tick)
+    }
     gsap.registerPlugin(ScrollTrigger)
     const hero = document.getElementById('top')
-    const fade = hero && gsap.to(canvas, {
+    let fade: gsap.core.Tween | undefined
+    const createFade = () => hero && !reducedMotion ? gsap.to(canvas, {
       opacity: 0,
       ease: 'none',
       scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.6 },
-    })
+    }) : undefined
+    const onMotionChange = (event: MediaQueryListEvent) => {
+      reducedMotion = event.matches
+      window.cancelAnimationFrame(frame)
+      frame = window.requestAnimationFrame(tick)
+      if (reducedMotion) entrance.progress(1).pause()
+      fade?.scrollTrigger?.kill()
+      fade?.kill()
+      if (reducedMotion) {
+        gsap.set(canvas, { clearProps: 'opacity' })
+        fade = undefined
+      } else {
+        fade = createFade()
+      }
+    }
+    canvas.addEventListener('webglcontextlost', onContextLost)
+    canvas.addEventListener('webglcontextrestored', onContextRestored)
+    motionQuery.addEventListener('change', onMotionChange)
+
+    fade = createFade()
     frame = window.requestAnimationFrame(tick)
 
     return () => {
@@ -174,6 +218,9 @@ export function AuroraWorld() {
       fade?.kill()
       entrance.kill()
       window.cancelAnimationFrame(frame)
+      motionQuery.removeEventListener('change', onMotionChange)
+      canvas.removeEventListener('webglcontextlost', onContextLost)
+      canvas.removeEventListener('webglcontextrestored', onContextRestored)
       window.removeEventListener('resize', resize)
       window.removeEventListener('pointermove', onPointerMove)
       building.geometry.dispose()
