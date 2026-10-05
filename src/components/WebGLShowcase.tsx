@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
+import crystalFallbackUrl from '../../assets/portfolio-crystal.png'
 import styles from './WebGLShowcase.module.css'
 
 export function WebGLShowcase() {
@@ -13,7 +14,12 @@ export function WebGLShowcase() {
     const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100)
     camera.position.set(0, 0, 5.1)
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' })
+    let renderer: THREE.WebGLRenderer
+    try {
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' })
+    } catch {
+      return
+    }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
     renderer.setClearColor(0x000000, 0)
     host.appendChild(renderer.domElement)
@@ -57,6 +63,7 @@ export function WebGLShowcase() {
       camera.updateProjectionMatrix()
       renderer.setSize(width, height, false)
       renderer.render(scene, camera)
+      renderer.domElement.dataset.ready = 'true'
     }
 
     let frame = 0
@@ -77,6 +84,20 @@ export function WebGLShowcase() {
       else renderer.render(scene, camera)
     }
 
+    const onContextLost = (event: Event) => {
+      event.preventDefault()
+      running = false
+      window.cancelAnimationFrame(frame)
+      renderer.domElement.dataset.lost = 'true'
+    }
+    const onContextRestored = () => {
+      delete renderer.domElement.dataset.lost
+      resize()
+      updateMotion()
+    }
+    renderer.domElement.addEventListener('webglcontextlost', onContextLost)
+    renderer.domElement.addEventListener('webglcontextrestored', onContextRestored)
+
     const observer = new ResizeObserver(resize)
     observer.observe(host)
     motionQuery.addEventListener('change', updateMotion)
@@ -86,6 +107,8 @@ export function WebGLShowcase() {
     return () => {
       observer.disconnect()
       motionQuery.removeEventListener('change', updateMotion)
+      renderer.domElement.removeEventListener('webglcontextlost', onContextLost)
+      renderer.domElement.removeEventListener('webglcontextrestored', onContextRestored)
       window.cancelAnimationFrame(frame)
       geometry.dispose()
       edges.geometry.dispose()
@@ -98,5 +121,9 @@ export function WebGLShowcase() {
     }
   }, [])
 
-  return <div className={styles.stage} ref={hostRef} role="img" aria-label="A softly rotating faceted 3D sculpture" />
+  return (
+    <div className={styles.stage} ref={hostRef} role="img" aria-label="A softly rotating faceted 3D sculpture">
+      <img className={styles.fallbackArtwork} src={crystalFallbackUrl} alt="" aria-hidden="true" loading="lazy" onError={(event) => { event.currentTarget.style.display = 'none' }} />
+    </div>
+  )
 }

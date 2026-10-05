@@ -127,6 +127,12 @@ export function ScrollSequence({
             }
             images.set(frame, bitmap)
             needsDraw = true
+            if (reducedMotion) {
+              window.cancelAnimationFrame(rafId)
+              rafId = window.requestAnimationFrame(() => {
+                if (!disposed && reducedMotion && needsDraw) draw()
+              })
+            }
           } catch {
             // Aborted downloads are expected when scroll direction changes quickly.
           } finally {
@@ -206,12 +212,18 @@ export function ScrollSequence({
       const second = Math.min(count, first + 1)
       const fraction = currentFrame - first
       const loadedFirst = nearestLoaded(first)
-      if (loadedFirst) drawFrame(loadedFirst)
+      if (loadedFirst) {
+        drawFrame(loadedFirst)
+        canvas.dataset.ready = 'true'
+      } else {
+        delete canvas.dataset.ready
+      }
       if (second !== first && fraction > 0.001 && images.has(second)) drawFrame(second, fraction)
       needsDraw = false
     }
 
     const updateTarget = () => {
+      if (reducedMotion) return
       const previous = Math.round(targetFrame)
       targetFrame = frameFromProgress(normalizedProgress())
       const next = Math.round(targetFrame)
@@ -244,6 +256,7 @@ export function ScrollSequence({
       context.setTransform(dpr, 0, 0, dpr, 0, 0)
       for (const bitmap of images.values()) bitmap.close()
       images.clear()
+      delete canvas.dataset.ready
       needsDraw = true
       requestAroundTarget()
     }
@@ -265,19 +278,28 @@ export function ScrollSequence({
         if (currentFrame !== previousFrame) needsDraw = true
       }
       if (needsDraw) draw()
-      rafId = window.requestAnimationFrame(tick)
+      if (!reducedMotion || currentFrame !== targetFrame) {
+        rafId = window.requestAnimationFrame(tick)
+      }
     }
 
     const onMotionChange = (event: MediaQueryListEvent) => {
       reducedMotion = event.matches
       if (reducedMotion) {
+        targetFrame = 1
+        currentFrame = 1
+      } else {
+        targetFrame = frameFromProgress(normalizedProgress())
         currentFrame = targetFrame
-        needsDraw = true
       }
+      needsDraw = true
+      requestAroundTarget()
+      window.cancelAnimationFrame(rafId)
+      rafId = window.requestAnimationFrame(tick)
     }
 
     resizeCanvas()
-    targetFrame = frameFromProgress(normalizedProgress())
+    targetFrame = reducedMotion ? 1 : frameFromProgress(normalizedProgress())
     currentFrame = targetFrame
     requestAroundTarget()
     window.addEventListener('scroll', updateTarget, { passive: true })
@@ -309,6 +331,7 @@ export function ScrollSequence({
     >
       <div ref={stageRef} className={styles.stage}>
         <canvas ref={canvasRef} className={styles.canvas} aria-hidden="true" />
+        <img className={styles.fallback} src={framePath(1)} alt="" aria-hidden="true" loading="eager" decoding="async" onError={(event) => { event.currentTarget.style.display = 'none' }} />
         <div className={styles.content}>{children}</div>
       </div>
     </div>

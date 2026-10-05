@@ -42,6 +42,9 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
   const journeyRef = useRef<HTMLDivElement>(null)
   const signatureRef = useRef<HTMLDivElement>(null)
   const driftTweens = useRef<gsap.core.Tween[]>([])
+  const motionTweens = useRef<gsap.core.Tween[]>([])
+  const revealTweens = useRef<gsap.core.Tween[]>([])
+  const revealElements = useRef<HTMLElement[]>([])
   const [activeChapter, setActiveChapter] = useState(0)
   const [selectedProject, setSelectedProject] = useState(0)
   const selectedProjectLink = projects[selectedProject]?.live_url || projects[selectedProject]?.source_url
@@ -70,8 +73,13 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
   const resetArtifact = (event: ReactPointerEvent<HTMLButtonElement>) => {
     const artifact = event.currentTarget
     const image = artifact.querySelector<HTMLElement>('img, [data-layered-artwork]')
-    if (image) gsap.to(image, { x: 0, y: 0, scale: 1, rotateX: 0, rotateY: 0, rotateZ: 0, duration: 1, ease: 'elastic.out(1, 0.6)', overwrite: true })
     const shards = artifact.querySelectorAll<HTMLElement>('[data-shard]')
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      if (image) gsap.set(image, { clearProps: 'transform' })
+      if (shards.length) gsap.set(shards, { clearProps: 'transform' })
+      return
+    }
+    if (image) gsap.to(image, { x: 0, y: 0, scale: 1, rotateX: 0, rotateY: 0, rotateZ: 0, duration: 1, ease: 'elastic.out(1, 0.6)', overwrite: true })
     if (shards.length) gsap.to(shards, { x: 0, y: 0, rotateZ: 0, scale: 1, duration: 0.95, ease: 'elastic.out(1, 0.65)', overwrite: true })
   }
 
@@ -87,6 +95,7 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
       delay: index * 0.3,
       ease: 'sine.inOut',
     }))
+    motionTweens.current.push(...driftTweens.current)
   }
 
   const pauseCrystalDrift = () => {
@@ -115,6 +124,10 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
   const settleCrystals = () => {
     const shards = signatureRef.current?.querySelectorAll<SVGGElement>('[data-shard]')
     if (!shards?.length) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.set(shards, { clearProps: 'transform' })
+      return
+    }
     gsap.to(shards, {
       x: 0, y: 0, rotation: 0, scale: 1,
       duration: 0.7,
@@ -130,6 +143,7 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
   useEffect(() => {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const sections = chapters.map(({ id }) => document.getElementById(id)).filter((section): section is HTMLElement => Boolean(section))
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     const observer = new IntersectionObserver((entries) => {
       const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
       if (visible) setActiveChapter(sections.indexOf(visible.target as HTMLElement))
@@ -140,10 +154,11 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
     const context = gsap.context(() => {
       startCrystalDrift()
       gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((element) => {
-        gsap.fromTo(element, { y: 34 }, {
-          y: 0, duration: 1.05, ease: 'power3.out',
+        revealElements.current.push(element)
+        revealTweens.current.push(gsap.fromTo(element, { y: reducedMotion ? 0 : 34 }, {
+          y: 0, duration: reducedMotion ? 0 : 1.05, ease: 'power3.out',
           scrollTrigger: { trigger: element, start: 'top 82%', once: true },
-        })
+        }))
       })
       gsap.utils.toArray<HTMLElement>('[data-artifact]').forEach((element, index) => {
         const artwork = element.querySelector<HTMLElement>('[data-artwork]')
@@ -152,11 +167,23 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
           scrollTrigger: { trigger: element, start: 'top 87%', once: true },
         })
         if (!reducedMotion) element.querySelectorAll<HTMLElement>('[data-shard]').forEach((shard, shardIndex) => {
-          gsap.fromTo(shard, { y: 20, scale: 0.4, autoAlpha: 0 }, { y: -8 - shardIndex * 2, scale: 1, autoAlpha: 0.95, duration: 2.3 + shardIndex * 0.3, delay: index * 0.16 + shardIndex * 0.12, repeat: -1, yoyo: true, ease: 'sine.inOut' })
+          motionTweens.current.push(gsap.fromTo(shard, { y: 20, scale: 0.4, autoAlpha: 0 }, { y: -8 - shardIndex * 2, scale: 1, autoAlpha: 0.95, duration: 2.3 + shardIndex * 0.3, delay: index * 0.16 + shardIndex * 0.12, repeat: -1, yoyo: true, ease: 'sine.inOut' }))
         })
       })
     }, journeyRef)
-    return () => { observer.disconnect(); context.revert() }
+    const onMotionChange = (event: MediaQueryListEvent) => {
+      motionTweens.current.forEach((tween) => event.matches ? tween.pause() : tween.resume())
+      if (event.matches) {
+        revealTweens.current.forEach((tween) => {
+          tween.progress(1).pause()
+          tween.scrollTrigger?.kill()
+          tween.kill()
+        })
+        gsap.set(revealElements.current, { clearProps: 'transform' })
+      }
+    }
+    motionQuery.addEventListener('change', onMotionChange)
+    return () => { observer.disconnect(); motionQuery.removeEventListener('change', onMotionChange); context.revert(); motionTweens.current = []; driftTweens.current = []; revealTweens.current = []; revealElements.current = [] }
   }, [])
 
   return (

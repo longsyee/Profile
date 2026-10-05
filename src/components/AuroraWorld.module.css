@@ -19,6 +19,14 @@
   pointer-events: none;
 }
 
+.world canvas[data-lost='true'] {
+  display: none;
+}
+
+.world canvas[data-failed='true'] {
+  display: none;
+}
+
 .fallback {
   position: absolute;
   z-index: 0;

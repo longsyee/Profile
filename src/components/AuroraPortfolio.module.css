@@ -194,7 +194,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .portfolio * {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
   .scrollCue b::after { animation: none; }
-  .primaryButton, .nav a { transition: none; }
-  .artifactVisual, .artifactOrbit, .aboutSignature > svg, .shard { transition: none; animation: none; }
 }
