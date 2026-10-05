@@ -2,6 +2,64 @@ import { createFileRoute } from '@tanstack/react-router'
 import { createAdminSession, createSessionCookie, isSameOriginRequest, verifyPassword } from '../../../server/auth'
 import { ensureDatabaseSchema, getDatabase, isDatabaseConfigured } from '../../../server/database'
 
+// This limiter is intentionally bounded and process-local. Production deployments
+// with multiple app instances should enforce the same policy at a shared edge.
+const WINDOW_MS = 15 * 60 * 1000
+const MAX_ATTEMPTS = positiveInteger(process.env.LOGIN_RATE_LIMIT_ATTEMPTS, 10)
+const MAX_BUCKETS = 10_000
+const OVERFLOW_BUCKET_COUNT = 1_024
+const attempts = new Map<string, { count: number; resetAt: number }>()
+const overflowAttempts = Array.from({ length: OVERFLOW_BUCKET_COUNT }, () => ({ count: 0, resetAt: 0 }))
+
+function positiveInteger(value: string | undefined, fallback: number) {
+  const parsed = Number(value)
+  return Number.isSafeInteger(parsed) && parsed > 0 ? parsed : fallback
+}
+
+function clientKeys(request: Request, email: string) {
+  // Do not put requests without a client address into one shared fallback bucket.
+  // Trust forwarded addresses only when the ingress overwrites the header.
+  const forwarded = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+  const keys = [`account:${email.toLowerCase()}`]
+  if (forwarded && forwarded.length <= 128) keys.push(`address:${forwarded}`)
+  return keys
+}
+
+function overflowIndex(key: string) {
+  // Stable bounded fallback. Hash collisions may throttle unrelated keys more
+  // strictly, but map exhaustion never disables login for the entire process.
+  let hash = 2_166_136_261
+  for (let index = 0; index < key.length; index += 1) {
+    hash ^= key.charCodeAt(index)
+    hash = Math.imul(hash, 16_777_619)
+  }
+  return (hash >>> 0) % OVERFLOW_BUCKET_COUNT
+}
+
+function increment(current: { count: number; resetAt: number }, now: number) {
+  if (current.resetAt <= now) {
+    current.count = 0
+    current.resetAt = now + WINDOW_MS
+  }
+  if (current.count >= MAX_ATTEMPTS) return false
+  current.count += 1
+  return true
+}
+
+function checkRateLimit(key: string) {
+  const now = Date.now()
+  for (const [bucket, value] of attempts) if (value.resetAt <= now) attempts.delete(bucket)
+  let current = attempts.get(key)
+  if (!current && attempts.size >= MAX_BUCKETS) {
+    return increment(overflowAttempts[overflowIndex(key)]!, now)
+  }
+  if (!current) {
+    current = { count: 0, resetAt: now + WINDOW_MS }
+    attempts.set(key, current)
+  }
+  return increment(current, now)
+}
+
 export const Route = createFileRoute('/api/auth/login')({
   server: {
     handlers: {
@@ -19,6 +77,12 @@ export const Route = createFileRoute('/api/auth/login')({
           const password = typeof body.password === 'string' ? body.password : ''
           if (!email || !password || email.length > 254 || password.length > 256) {
             return Response.json({ error: 'Enter a valid email and password.' }, { status: 400 })
+          }
+          if (!clientKeys(request, email).every(checkRateLimit)) {
+            return Response.json({ error: 'Too many sign-in attempts. Try again in 15 minutes.' }, {
+              status: 429,
+              headers: { 'Retry-After': String(Math.ceil(WINDOW_MS / 1000)) },
+            })
           }
 
           await ensureDatabaseSchema()
