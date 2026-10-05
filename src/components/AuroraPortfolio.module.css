@@ -40,7 +40,6 @@
 .primaryButton { display: inline-flex; align-items: center; justify-content: space-between; gap: 30px; padding: 15px 18px; color: var(--ink); background: var(--lime); font-size: 11px; font-weight: 700; text-decoration: none; transition: transform .2s, background .2s; }
 .primaryButton:hover { transform: translateY(-3px); background: var(--paper); }
 .primaryButton span { font-size: 16px; }
-.textLink { color: var(--paper); font-size: 11px; text-underline-offset: 4px; }
 .progress { position: fixed; z-index: 12; top: 50%; right: 25px; display: flex; flex-direction: column; align-items: center; gap: 13px; transform: translateY(-50%); }
 .progress a { display: grid; place-items: center; width: 22px; height: 22px; text-decoration: none; }
 .progress a > span { width: 5px; height: 5px; border: 1px solid var(--cobalt); border-radius: 50%; transition: all .2s; }
@@ -97,7 +96,7 @@
 .aboutAside > span { color: var(--coral); }
 .aboutAside p { color: #cbc6d3; font-size: 12px; line-height: 1.8; }
 .aboutAside i { display: block; color: var(--lime); font-size: 30px; font-style: normal; }
-.contact { min-height: 95svh; overflow: hidden; border-top: 1px solid #f5f0e61c; background: var(--ink); }
+.contact { min-height: 95svh; overflow: hidden; padding-bottom: 150px; border-top: 1px solid #f5f0e61c; background: var(--ink); }
 .contactCopy { position: relative; z-index: 2; max-width: 650px; }
 .contact h2 { font-size: clamp(66px, 9vw, 132px); }
 .contact h2 em { color: var(--coral); }
@@ -113,6 +112,7 @@
 .footerBrand { display: flex; flex-direction: column; gap: 4px; color: var(--lime) !important; letter-spacing: .16em; }
 .footerBrand span { color: #aaa5b8; font-size: 7px; }
 .sceneLabel { position: absolute; right: clamp(30px, 9vw, 150px); bottom: 35px; left: clamp(30px, 9vw, 150px); display: flex; align-items: center; gap: 12px; color: #aaa5b8; font: 8px 'DM Mono', monospace; letter-spacing: .12em; }
+.contact > .sceneLabel { bottom: 88px; }
 .sceneLabel span { color: var(--lime); }
 .sceneLabel i { display: block; width: 25px; height: 1px; background: var(--coral); }
 .portfolio :is(a, button):focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; box-shadow: 0 0 0 5px var(--ink); }
@@ -123,7 +123,7 @@
   .nav { gap: 12px; }
   .nav a { font-size: 9px; }
   .chapter { min-height: 100svh; padding: 110px 26px 96px; }
-  .hero { min-height: max(100svh, 780px); justify-content: flex-start; }
+  .hero { min-height: 100svh; justify-content: flex-start; }
   .hero::after { top: 40%; right: -24%; width: 78vw; }
   .heroCopy { order: 1; width: 100%; margin-top: 45px; padding: 0; }
   .eyebrow { max-width: 280px; margin-bottom: 23px; font-size: 8px; line-height: 1.7; }
@@ -149,12 +149,13 @@
   .skills { max-width: 345px; }
   .skills li { font-size: 7px; }
   .aboutAside { max-width: 330px; align-self: start; }
-  .contact { min-height: 100svh; }
+  .contact { min-height: 100svh; padding-bottom: 125px; }
   .contact h2 { font-size: clamp(65px, 14vw, 96px); }
   .contactOrb { top: auto; right: -15%; bottom: 18%; width: 54vw; opacity: .85; }
   .footer { right: 25px; bottom: 22px; left: 25px; gap: 10px; font-size: 7px; }
   .footer > span { display: none; }
   .sceneLabel { right: 26px; bottom: 25px; left: 26px; }
+  .contact > .sceneLabel { bottom: 70px; }
 }
 @media (max-width: 390px) {
   .nav { gap: 8px; }
