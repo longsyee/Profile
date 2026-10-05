@@ -1,17 +1,8 @@
 import { useEffect, useState } from 'react'
 import type { Project } from '../lib/projects'
-import productInterfaceUrl from '../../assets/portfolio-concepts/product-interface.png'
-import scrollStudyUrl from '../../assets/portfolio-concepts/scroll-study.png'
-import signalStudyUrl from '../../assets/portfolio-concepts/signal-study.png'
 import { CursorMascot } from './CursorMascot'
 import { BuildInMotionStory } from './BuildInMotionStory'
 import styles from './AuroraPortfolio.module.css'
-
-const conceptArtwork: Record<string, string> = {
-  'concept-01': productInterfaceUrl,
-  'concept-02': scrollStudyUrl,
-  'concept-03': signalStudyUrl,
-}
 
 const navItems = [
   { id: 'process', label: 'Process' },
@@ -81,12 +72,12 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
           {projects.length ? (
             <div className={styles.projectGrid}>
               {projects.map((project, index) => {
-                const image = project.image_url || (project.concept ? conceptArtwork[String(project.id)] : undefined)
+                const image = project.image_url
                 const destination = project.live_url || project.source_url
                 return (
                   <article className={`${styles.project} ${styles[`project${index % 3}`]}`} key={project.id} data-reveal>
                     <div className={styles.projectVisual}>
-                      {image ? <img src={image} alt={`${project.title} project artwork`} loading="lazy" /> : <div className={styles.projectFallback} aria-hidden="true"><span>{String(index + 1).padStart(2, '0')}</span><i /></div>}
+                      {image ? <img src={image} alt={`${project.title} project artwork`} loading="lazy" /> : <div className={styles.projectFallback} aria-hidden="true"><span>{project.concept ? 'FIELD STUDY' : String(index + 1).padStart(2, '0')}</span><i /></div>}
                       <span className={styles.projectNumber}>{String(index + 1).padStart(2, '0')}</span>
                     </div>
                     <div className={styles.projectMeta}>
@@ -109,7 +100,6 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
         </section>
 
         <section className={`${styles.chapter} ${styles.about}`} id="about" aria-labelledby="about-title">
-          <div className={styles.aboutNumber} aria-hidden="true">04</div>
           <div className={styles.aboutCopy} data-reveal>
             <p className={styles.eyebrow}>A LITTLE ABOUT HOW I WORK</p>
             <h2 id="about-title">Design eye.<br /><em>Developer hands.</em></h2>
