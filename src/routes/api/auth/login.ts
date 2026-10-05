@@ -7,7 +7,9 @@ import { ensureDatabaseSchema, getDatabase, isDatabaseConfigured } from '../../.
 const WINDOW_MS = 15 * 60 * 1000
 const MAX_ATTEMPTS = positiveInteger(process.env.LOGIN_RATE_LIMIT_ATTEMPTS, 10)
 const MAX_BUCKETS = 10_000
+const OVERFLOW_BUCKET_COUNT = 1_024
 const attempts = new Map<string, { count: number; resetAt: number }>()
+const overflowAttempts = Array.from({ length: OVERFLOW_BUCKET_COUNT }, () => ({ count: 0, resetAt: 0 }))
 
 function positiveInteger(value: string | undefined, fallback: number) {
   const parsed = Number(value)
@@ -15,25 +17,47 @@ function positiveInteger(value: string | undefined, fallback: number) {
 }
 
 function clientKeys(request: Request, email: string) {
-  // The account key applies across addresses, even if a client forges its forwarded address.
+  // Do not put requests without a client address into one shared fallback bucket.
   // Trust forwarded addresses only when the ingress overwrites the header.
   const forwarded = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-  const address = forwarded && forwarded.length <= 128 ? forwarded : 'unknown-address'
-  return [`address:${address}`, `account:${email.toLowerCase()}`]
+  const keys = [`account:${email.toLowerCase()}`]
+  if (forwarded && forwarded.length <= 128) keys.push(`address:${forwarded}`)
+  return keys
+}
+
+function overflowIndex(key: string) {
+  // Stable bounded fallback. Hash collisions may throttle unrelated keys more
+  // strictly, but map exhaustion never disables login for the entire process.
+  let hash = 2_166_136_261
+  for (let index = 0; index < key.length; index += 1) {
+    hash ^= key.charCodeAt(index)
+    hash = Math.imul(hash, 16_777_619)
+  }
+  return (hash >>> 0) % OVERFLOW_BUCKET_COUNT
+}
+
+function increment(current: { count: number; resetAt: number }, now: number) {
+  if (current.resetAt <= now) {
+    current.count = 0
+    current.resetAt = now + WINDOW_MS
+  }
+  if (current.count >= MAX_ATTEMPTS) return false
+  current.count += 1
+  return true
 }
 
 function checkRateLimit(key: string) {
   const now = Date.now()
   for (const [bucket, value] of attempts) if (value.resetAt <= now) attempts.delete(bucket)
   let current = attempts.get(key)
+  if (!current && attempts.size >= MAX_BUCKETS) {
+    return increment(overflowAttempts[overflowIndex(key)]!, now)
+  }
   if (!current) {
-    if (attempts.size >= MAX_BUCKETS) return false
     current = { count: 0, resetAt: now + WINDOW_MS }
     attempts.set(key, current)
   }
-  if (current.count >= MAX_ATTEMPTS) return false
-  current.count += 1
-  return true
+  return increment(current, now)
 }
 
 export const Route = createFileRoute('/api/auth/login')({
