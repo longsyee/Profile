@@ -22,6 +22,7 @@ export function CursorMascot() {
       frame = 0
     }
     const move = (event: PointerEvent) => {
+      if (event.pointerType === 'touch') return
       const bounds = screen.getBoundingClientRect()
       gazeX = Math.max(-5, Math.min(5, (event.clientX - (bounds.left + bounds.width / 2)) / bounds.width * 10))
       gazeY = Math.max(-4, Math.min(4, (event.clientY - (bounds.top + bounds.height / 2)) / bounds.height * 8))
