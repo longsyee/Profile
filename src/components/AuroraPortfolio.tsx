@@ -43,6 +43,8 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
   const signatureRef = useRef<HTMLDivElement>(null)
   const driftTweens = useRef<gsap.core.Tween[]>([])
   const motionTweens = useRef<gsap.core.Tween[]>([])
+  const revealTweens = useRef<gsap.core.Tween[]>([])
+  const revealElements = useRef<HTMLElement[]>([])
   const [activeChapter, setActiveChapter] = useState(0)
   const [selectedProject, setSelectedProject] = useState(0)
   const selectedProjectLink = projects[selectedProject]?.live_url || projects[selectedProject]?.source_url
@@ -152,10 +154,11 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
     const context = gsap.context(() => {
       startCrystalDrift()
       gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((element) => {
-        gsap.fromTo(element, { y: reducedMotion ? 0 : 34 }, {
+        revealElements.current.push(element)
+        revealTweens.current.push(gsap.fromTo(element, { y: reducedMotion ? 0 : 34 }, {
           y: 0, duration: reducedMotion ? 0 : 1.05, ease: 'power3.out',
           scrollTrigger: { trigger: element, start: 'top 82%', once: true },
-        })
+        }))
       })
       gsap.utils.toArray<HTMLElement>('[data-artifact]').forEach((element, index) => {
         const artwork = element.querySelector<HTMLElement>('[data-artwork]')
@@ -170,9 +173,17 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
     }, journeyRef)
     const onMotionChange = (event: MediaQueryListEvent) => {
       motionTweens.current.forEach((tween) => event.matches ? tween.pause() : tween.resume())
+      if (event.matches) {
+        revealTweens.current.forEach((tween) => {
+          tween.progress(1).pause()
+          tween.scrollTrigger?.kill()
+          tween.kill()
+        })
+        gsap.set(revealElements.current, { clearProps: 'transform' })
+      }
     }
     motionQuery.addEventListener('change', onMotionChange)
-    return () => { observer.disconnect(); motionQuery.removeEventListener('change', onMotionChange); context.revert(); motionTweens.current = []; driftTweens.current = [] }
+    return () => { observer.disconnect(); motionQuery.removeEventListener('change', onMotionChange); context.revert(); motionTweens.current = []; driftTweens.current = []; revealTweens.current = []; revealElements.current = [] }
   }, [])
 
   return (
