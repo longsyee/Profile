@@ -3,7 +3,7 @@ import type { Project } from '../lib/projects'
 import productInterfaceUrl from '../../assets/portfolio-concepts/product-interface.png'
 import scrollStudyUrl from '../../assets/portfolio-concepts/scroll-study.png'
 import signalStudyUrl from '../../assets/portfolio-concepts/signal-study.png'
-import { AuroraWorld } from './AuroraWorld'
+import { CursorMascot } from './CursorMascot'
 import { BuildInMotionStory } from './BuildInMotionStory'
 import styles from './AuroraPortfolio.module.css'
 
@@ -36,8 +36,6 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
   return (
     <main className={styles.portfolio}>
       <a className={styles.skipLink} href="#main-content">Skip to content</a>
-      <AuroraWorld />
-      <div className={styles.shade} aria-hidden="true" />
 
       <header className={styles.header}>
         <a className={styles.brand} href="#top" aria-label="Edwin, home">
@@ -59,6 +57,7 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
 
       <div className={styles.journey} id="main-content" tabIndex={-1}>
         <section className={`${styles.chapter} ${styles.hero}`} id="top" aria-labelledby="hero-title">
+          <CursorMascot />
           <div className={styles.heroCopy}>
             <p className={styles.eyebrow}><span className={styles.statusDot} /> INDEPENDENT WEB DEVELOPER + DESIGNER</p>
             <h1 id="hero-title"><span>BUILDING FOR</span><br /><em>what’s next.</em></h1>
@@ -68,7 +67,6 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
               <a className={styles.textLink} href="#work">Skip to projects <span aria-hidden="true">↘</span></a>
             </div>
           </div>
-          <div className={styles.heroStamp} aria-hidden="true"><span>IDEAS</span><i>IN</i><b>MOTION</b></div>
           <div className={styles.sceneLabel}><span>01 / THE ATELIER</span><i /> MALAYSIA · EVERYWHERE</div>
         </section>
 
