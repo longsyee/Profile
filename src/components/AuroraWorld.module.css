@@ -4,7 +4,7 @@
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-  background: #071018;
+  background: #21102f;
   isolation: isolate;
   opacity: 1;
 }
@@ -31,7 +31,8 @@
   position: absolute;
   z-index: 0;
   inset: 0;
-  background-position: center;
+  background-color: #21102f;
+  background-position: 59% 50%;
   background-size: cover;
   opacity: 1;
 }

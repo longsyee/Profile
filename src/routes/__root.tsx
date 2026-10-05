@@ -6,7 +6,7 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { name: 'theme-color', content: '#071018' },
+      { name: 'theme-color', content: '#21102f' },
       { title: 'Edwin | Developer + Designer' },
     ],
     links: [{ rel: 'stylesheet', href: appCss }],

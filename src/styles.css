@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap');
 
 * { box-sizing: border-box; }
-html { min-width: 320px; min-height: 100%; scroll-behavior: smooth; background: #071018; }
-body { min-width: 320px; min-height: 100%; margin: 0; background: #071018; color: #f0f5ed; font-family: 'Manrope', 'Avenir Next', Avenir, sans-serif; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-::selection { color: #06120e; background: #a9ffd9; }
+html { min-width: 320px; min-height: 100%; scroll-behavior: smooth; background: #21102f; }
+body { min-width: 320px; min-height: 100%; margin: 0; background: #21102f; color: #f8f1e6; font-family: 'Manrope', 'Avenir Next', Avenir, sans-serif; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+::selection { color: #21102f; background: #d2fa62; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
