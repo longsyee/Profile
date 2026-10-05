@@ -1,0 +1,19 @@
+.mascot { position: absolute; top: 5%; right: 2%; width: min(59vw, 760px); aspect-ratio: 1; pointer-events: none; }
+.mascot img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.screen { position: absolute; left: 36.2%; top: 9.3%; width: 23.1%; height: 20.8%; overflow: hidden; border-radius: 26% / 21%; --gaze-x: 0px; --gaze-y: 0px; }
+.eyes { display: block; width: 100%; height: 100%; }
+.pupils { transform: translate(var(--gaze-x), var(--gaze-y)); transition: transform 180ms ease-out; }
+@media (max-width: 760px) {
+  .mascot {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    order: 2;
+    align-self: center;
+    width: min(68vw, 320px);
+    margin: 22px auto 82px;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) { .pupils { transition: none; } }
