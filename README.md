@@ -27,6 +27,10 @@ The public page works without a database and shows clearly labeled concept cards
 
 The API creates its tables on first use. Uploaded project images are written to `assets/uploads/`; deployments need persistent storage mounted there.
 
+The optional editor has configurable safeguards in `.env`: `LOGIN_RATE_LIMIT_ATTEMPTS` sets the per-account and per-client-address attempt cap in a 15-minute window (default 10), while `UPLOAD_MAX_FILE_BYTES`, `UPLOAD_MAX_TOTAL_BYTES`, and `UPLOAD_MAX_FILES` set per-image (10 MiB), total-storage (512 MiB), and file-count (500) limits. Upload request bodies are streamed with a hard size cap before multipart parsing. The rate limiter and upload quota scan are process-local; for multiple app instances, enforce matching login limits and storage quotas at a shared gateway or on the shared storage service. Ensure the trusted ingress overwrites `X-Forwarded-For`; the account-based throttle remains active if that header is absent or untrusted.
+
+No automatic upload deletion or retention period is configured. The owner should choose a retention period before launch; until then, remove obsolete uploads manually and keep a backup before cleanup. Increasing quota variables does not resize the deployment's persistent volume.
+
 ## Production
 
 ```sh
