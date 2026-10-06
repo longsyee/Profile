@@ -81,7 +81,6 @@ export function BuildInMotionStory() {
           </article>)}
         </div>
       </div>
-      <div className={styles.storyMarquee} aria-hidden="true"><span>NOTICE - PROTOTYPE - REFINE - SHIP - </span><span>NOTICE - PROTOTYPE - REFINE - SHIP - </span></div>
     </section>
   )
 }
