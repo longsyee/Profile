@@ -38,6 +38,32 @@ export function PersonalProfile() {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return
+
+    const targets = Array.from(document.querySelectorAll<HTMLElement>(`.${styles.sectionReveal}`))
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return
+        entry.target.classList.remove(styles.sectionRevealHidden)
+        entry.target.classList.add(styles.sectionRevealVisible)
+        observer.unobserve(entry.target)
+      })
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 })
+
+    targets.forEach((section) => {
+      if (section.getBoundingClientRect().top > window.innerHeight) {
+        section.classList.add(styles.sectionRevealHidden)
+      }
+      observer.observe(section)
+    })
+
+    return () => {
+      observer.disconnect()
+      targets.forEach((section) => section.classList.remove(styles.sectionRevealHidden, styles.sectionRevealVisible))
+    }
+  }, [])
+
   return (
     <main className={styles.profile}>
       <a className={styles.skipLink} href="#main-content">Skip to content</a>
@@ -64,7 +90,7 @@ export function PersonalProfile() {
           <p className={styles.sectionNumber}>01 <span>INTRODUCTION</span></p>
         </section>
 
-        <section className={styles.capabilities} id="capabilities" aria-labelledby="capabilities-title">
+        <section className={`${styles.capabilities} ${styles.sectionReveal}`} id="capabilities" aria-labelledby="capabilities-title">
           <div className={styles.sectionHeading}>
             <p className={styles.eyebrow}>WHAT I DO</p>
             <h2 id="capabilities-title">Capabilities</h2>
@@ -75,7 +101,7 @@ export function PersonalProfile() {
           <p className={styles.sectionNumber}>02 <span>CAPABILITIES</span></p>
         </section>
 
-        <section className={styles.processSection} id="process" aria-labelledby="process-title">
+        <section className={`${styles.processSection} ${styles.sectionReveal}`} id="process" aria-labelledby="process-title">
           <div>
             <div className={styles.sectionHeading}>
               <p className={styles.eyebrow}>HOW I WORK</p>
@@ -89,7 +115,7 @@ export function PersonalProfile() {
           <p className={styles.sectionNumber}>03 <span>PROCESS</span></p>
         </section>
 
-        <section className={styles.about} id="about" aria-labelledby="about-title">
+        <section className={`${styles.about} ${styles.sectionReveal}`} id="about" aria-labelledby="about-title">
           <div className={styles.sectionHeading}>
             <p className={styles.eyebrow}>A LITTLE ABOUT ME</p>
             <h2 id="about-title">Design eye.<br />Developer hands.</h2>
@@ -101,7 +127,7 @@ export function PersonalProfile() {
           <p className={styles.sectionNumber}>04 <span>ABOUT</span></p>
         </section>
 
-        <section className={styles.contact} id="contact" aria-labelledby="contact-title">
+        <section className={`${styles.contact} ${styles.sectionReveal}`} id="contact" aria-labelledby="contact-title">
           <div>
             <p className={styles.eyebrow}>GET IN TOUCH</p>
             <h2 id="contact-title">Say hello.</h2>
