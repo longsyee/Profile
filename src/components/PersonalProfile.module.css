@@ -22,12 +22,16 @@
 .content { max-width: 1120px; margin: 0 auto; padding: 0 clamp(24px, 8vw, 118px); }
 .content:focus { outline: 2px solid var(--lime); outline-offset: -5px; }
 .intro, .capabilities, .processSection, .about, .contact { position: relative; padding: clamp(80px, 11vw, 150px) 0; border-bottom: 1px solid #f5f0e62b; scroll-margin-top: 76px; }
-.intro { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(250px, .8fr); align-items: end; column-gap: clamp(35px, 8vw, 105px); min-height: min(700px, calc(100svh - 76px)); padding-top: 110px; }
+.intro { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(270px, .88fr); align-items: center; column-gap: clamp(35px, 7vw, 90px); min-height: min(740px, calc(100svh - 76px)); padding-top: 90px; }
 .eyebrow { margin: 0 0 22px; color: var(--lime); font: 9px/1.6 'DM Mono', monospace; letter-spacing: .15em; text-transform: uppercase; }
-.intro > .eyebrow { grid-column: 1/-1; align-self: end; margin-bottom: 30px; }
-.intro h1 { margin: 0; font-size: clamp(66px, 11vw, 142px); line-height: .9; letter-spacing: -.085em; font-weight: 700; text-wrap: balance; }
+.intro > .eyebrow { grid-column: 1/-1; grid-row: 1; align-self: end; margin-bottom: 22px; animation: profile-enter .65s cubic-bezier(.16, 1, .3, 1) both; }
+.intro h1 { grid-column: 1; grid-row: 2; align-self: end; margin: 0; font-size: clamp(66px, 10.4vw, 132px); line-height: .9; letter-spacing: -.085em; font-weight: 700; text-wrap: balance; animation: profile-enter .75s .08s cubic-bezier(.16, 1, .3, 1) both; }
 .intro h1 span { color: var(--violet); }
-.introBody { max-width: 390px; padding-bottom: 6px; }
+.introBody { grid-column: 1; grid-row: 3; max-width: 470px; padding-bottom: 6px; animation: profile-enter .75s .17s cubic-bezier(.16, 1, .3, 1) both; }
+.heroArtwork { position: relative; grid-column: 2; grid-row: 2 / 4; align-self: center; width: 100%; max-height: 550px; aspect-ratio: 2 / 3; margin: 0; overflow: hidden; background: var(--ink); isolation: isolate; animation: profile-artwork-in 1s .12s cubic-bezier(.16, 1, .3, 1) both; }
+.heroArtwork img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: .84; mix-blend-mode: screen; mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 84%, transparent 100%); }
+@keyframes profile-enter { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes profile-artwork-in { from { opacity: 0; transform: translateY(12px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
 .role { margin: 0; color: var(--coral); font-size: clamp(20px, 2.5vw, 29px); font-weight: 600; line-height: 1.25; letter-spacing: -.04em; }
 .lede, .aboutCopy p, .contactCopy p { color: var(--muted); font-size: 14px; line-height: 1.85; }
 .lede { margin: 18px 0 22px; }
@@ -64,10 +68,12 @@
   .navigation a { font-size: 10px; }
   .content { padding-right: 24px; padding-left: 24px; }
   .intro, .capabilities, .processSection, .about, .contact { grid-template-columns: 1fr; gap: 32px; }
-  .intro { min-height: min(720px, calc(100svh - 92px)); align-content: center; padding-top: 80px; padding-bottom: 100px; }
+  .intro { min-height: min(760px, calc(100svh - 92px)); align-content: center; padding-top: 70px; padding-bottom: 100px; }
   .intro > .eyebrow { margin-bottom: 22px; }
   .intro h1 { font-size: clamp(63px, 14vw, 100px); }
   .introBody { max-width: 470px; }
+  .heroArtwork { grid-column: 1; grid-row: 4; max-height: 190px; aspect-ratio: 16 / 7; margin-top: 2px; animation-delay: .22s; }
+  .heroArtwork img { object-position: center 51%; mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 88%, transparent 100%); }
   .sectionNumber { bottom: 20px; }
   .capabilityList { gap: 0 20px; }
   .capabilityList li { min-height: 125px; }
@@ -85,5 +91,5 @@
   .footer { flex-wrap: wrap; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .profile *, .profile *::before, .profile *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+  .profile *, .profile *::before, .profile *::after { scroll-behavior: auto !important; animation: none !important; transition-duration: .01ms !important; }
 }

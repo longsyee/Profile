@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import profileArtwork from '../assets/edwin-profile-aurora.webp'
 import styles from './PersonalProfile.module.css'
 
 const sections = [
@@ -57,6 +58,9 @@ export function PersonalProfile() {
             <p className={styles.lede}>I work across the whole experience: shaping an idea, designing its interface, and building the system behind it. Thoughtful details can make technology feel clear, useful, and human.</p>
             <a className={styles.textLink} href="#contact">A little more about me <span aria-hidden="true">↓</span></a>
           </div>
+          <figure className={styles.heroArtwork} aria-hidden="true">
+            <img src={profileArtwork} alt="" />
+          </figure>
           <p className={styles.sectionNumber}>01 <span>INTRODUCTION</span></p>
         </section>
 
