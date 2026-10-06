@@ -73,7 +73,7 @@ export function BuildInMotionStory() {
             <div className={styles.shipStamp} aria-hidden="true">READY TO MEET THE WORLD <span>04 / 04</span></div>
             <div className={styles.sceneIndex}><span>{phases.find((item) => item.id === phase)?.number}</span> / 04</div>
           </div>
-          <p className={styles.sceneCaption}>ONE IDEA, FOUR MOVES <span>/</span> NOTICE - PROTOTYPE - REFINE - SHIP</p>
+          <p className={styles.sceneCaption}>ONE IDEA, FOUR MOVES</p>
         </div>
         <div className={styles.steps}>
           {phases.map((item, index) => <article key={item.id} ref={(node) => { stepRefs.current[index] = node }} className={`${styles.step} ${phase === item.id ? styles.stepActive : ''}`}>
