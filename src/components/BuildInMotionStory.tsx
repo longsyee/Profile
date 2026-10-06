@@ -58,7 +58,7 @@ export function BuildInMotionStory() {
       <div className={styles.storyHeader} data-reveal>
         <p className={styles.eyebrow}>02 / HOW IDEAS BECOME REAL</p>
         <h2 id="story-title">Notice.<br /><em>Then make.</em></h2>
-        <p>Good work moves from a real question to something useful in the world.</p>
+        <p>From a real question to a useful thing, in four clear moves.</p>
         <div className={styles.controls} role="group" aria-label="Choose a build phase">
           {phases.map((item) => <button key={item.id} type="button" onClick={() => selectPhase(item.id, true)} aria-pressed={phase === item.id}><span className={styles.controlNumber}>{item.number}</span><span>{item.label}</span></button>)}
         </div>
@@ -73,7 +73,7 @@ export function BuildInMotionStory() {
             <div className={styles.shipStamp} aria-hidden="true">READY TO MEET THE WORLD <span>04 / 04</span></div>
             <div className={styles.sceneIndex}><span>{phases.find((item) => item.id === phase)?.number}</span> / 04</div>
           </div>
-          <p className={styles.sceneCaption}>ONE IDEA, FOUR MOVES</p>
+          <p className={styles.sceneCaption}>THE PRACTICE <span>01—04</span></p>
         </div>
         <div className={styles.steps}>
           {phases.map((item, index) => <article key={item.id} ref={(node) => { stepRefs.current[index] = node }} className={`${styles.step} ${phase === item.id ? styles.stepActive : ''}`}>

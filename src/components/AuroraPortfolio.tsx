@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { Project } from '../lib/projects'
-import { CursorMascot } from './CursorMascot'
+import heroArtworkUrl from '../../assets/portfolio-print-studio.webp'
 import { BuildInMotionStory } from './BuildInMotionStory'
 import styles from './AuroraPortfolio.module.css'
 
@@ -48,16 +48,19 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
 
       <div className={styles.journey} id="main-content" tabIndex={-1}>
         <section className={`${styles.chapter} ${styles.hero}`} id="top" aria-labelledby="hero-title">
-          <CursorMascot />
+          <div className={styles.heroArtwork} aria-hidden="true">
+            <img src={heroArtworkUrl} alt="" fetchPriority="high" />
+            <span>STUDY 01 <i /> IDEAS IN MOTION</span>
+          </div>
           <div className={styles.heroCopy}>
             <p className={styles.eyebrow}><span className={styles.statusDot} /> INDEPENDENT WEB DEVELOPER + DESIGNER</p>
             <h1 id="hero-title"><span>BUILDING FOR</span><br /><em>what’s next.</em></h1>
-            <p className={styles.lede}>I’m Edwin. I turn ambitious ideas into expressive websites, thoughtful products, and details people remember.</p>
+            <p className={styles.lede}>I’m Edwin. I shape ambitious ideas into expressive websites and digital experiences people remember.</p>
             <div className={styles.actions}>
               <a className={styles.primaryButton} href="#work">Explore selected work <span aria-hidden="true">↓</span></a>
             </div>
           </div>
-          <div className={styles.sceneLabel}><span>01 / THE ATELIER</span><i /> MALAYSIA · EVERYWHERE</div>
+          <div className={styles.sceneLabel}><span>01 / INTRODUCTION</span><i /> MALAYSIA · INDEPENDENT BY DESIGN</div>
         </section>
 
         <BuildInMotionStory />
@@ -66,7 +69,7 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
           <div className={styles.workHeading} data-reveal>
             <p className={styles.eyebrow}>03 / SELECTED WORK</p>
             <h2 id="work-title">Good ideas<br /><em>made real.</em></h2>
-            <p className={styles.sectionIntro}>A few things built with curiosity, care, and a healthy respect for the details.</p>
+            <p className={styles.sectionIntro}>A selection of thoughtful experiments and useful things, made with care.</p>
           </div>
           {projects.length ? (
             <div className={styles.projectGrid}>
@@ -95,18 +98,18 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
           ) : (
             <div className={styles.emptyWork} data-reveal><span>THE NEXT CHAPTER IS YOURS</span><p>New work is taking shape. In the meantime, let’s talk about what you’re building.</p><a href="#contact">Start a conversation ↗</a></div>
           )}
-          <div className={styles.sceneLabel}><span>03 / SELECTED WORK</span><i /> IDEAS, IN THE WILD</div>
+          <div className={styles.sceneLabel}><span>03 / SELECTED WORK</span><i /> MADE TO MEET THE WORLD</div>
         </section>
 
         <section className={`${styles.chapter} ${styles.about}`} id="about" aria-labelledby="about-title">
           <div className={styles.aboutCopy} data-reveal>
             <p className={styles.eyebrow}>A LITTLE ABOUT HOW I WORK</p>
             <h2 id="about-title">Design eye.<br /><em>Developer hands.</em></h2>
-            <p className={styles.aboutBody}>I work across the whole experience: shaping the idea, designing the interface, and building the system behind it. The best details happen when all three speak the same language.</p>
+            <p className={styles.aboutBody}>I shape the idea, design the interface, and build the system behind it. The best details happen when all three work together.</p>
             <ul className={styles.skills} aria-label="Capabilities"><li>Web development</li><li>Interface design</li><li>Creative technology</li><li>AI experiences</li></ul>
           </div>
-          <div className={styles.aboutAside} data-reveal><span>THE PRACTICE</span><p>Good work should feel as considered as it looks. I like clear thinking, useful experiments, and a little bit of magic in the margins.</p><i aria-hidden="true">✳</i></div>
-          <div className={styles.sceneLabel}><span>04 / THE MAKER</span><i /> THOUGHT THROUGH · BUILT WITH CARE</div>
+          <div className={styles.aboutAside} data-reveal><span>THE PRACTICE</span><p>Clear thinking, useful experiments, and a little magic in the margins.</p><i aria-hidden="true">✳</i></div>
+          <div className={styles.sceneLabel}><span>04 / THE MAKER</span><i /> DESIGN · CODE · CURIOSITY</div>
         </section>
 
         <section className={`${styles.chapter} ${styles.contact}`} id="contact" aria-labelledby="contact-title">
@@ -117,7 +120,7 @@ export function AuroraPortfolio({ projects }: { projects: Project[] }) {
             <a className={styles.primaryButton} href="https://zhiyuantech.ai" target="_blank" rel="noreferrer">Start a conversation <span aria-hidden="true">↗</span></a>
           </div>
           <div className={styles.contactOrb} aria-hidden="true"><span>LET’S<br />BUILD</span><i /></div>
-          <div className={styles.sceneLabel}><span>05 / WHAT’S NEXT</span><i /> YOUR MOVE</div>
+          <div className={styles.sceneLabel}><span>05 / CONTACT</span><i /> LET’S MAKE SOMETHING MATTER</div>
           <footer className={styles.footer}><a className={styles.footerBrand} href="#top">EDWIN<span>INDEPENDENT BY DESIGN</span></a><span>© 2026 · MADE WITH INTENT</span><a href="https://zhiyuantech.ai" target="_blank" rel="noreferrer">ZHIYUANTECH.AI ↗</a></footer>
         </section>
       </div>
