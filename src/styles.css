@@ -1,7 +1,7 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 * { box-sizing: border-box; }
-html { min-width: 320px; min-height: 100%; scroll-behavior: smooth; background: #171522; }
-body { min-width: 320px; min-height: 100%; margin: 0; background: #171522; color: #f5f0e6; font-family: 'Space Grotesk', 'Avenir Next', sans-serif; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+html { min-width: 320px; min-height: 100%; scroll-behavior: smooth; background: #f5f0e6; }
+body { min-width: 320px; min-height: 100%; margin: 0; background: #f5f0e6; color: #171522; font-family: 'Space Grotesk', 'Avenir Next', sans-serif; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 ::selection { color: #171522; background: #d6f36a; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
